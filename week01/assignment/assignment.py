@@ -21,21 +21,60 @@ Not passing an assert or answering #10 and #12: 0 points (code must pass all ass
 from unittest import TestCase
 from cse251functions import *
 
-# 1) TODO write a function called 'perform_math' that takes three parameters:
-#      - initial_value: int
-#      - value: int
-#      - operation: str
-#      - return value: float
-#      The function should perform the mathematical operation, represented
-#      by the string operation parameter, on the initial_value and value.
-#      Delete these instructions and replace with your own description of that the function does.
+# 1)
 
-# 2) TODO write a function called 'find_word_index' that takes two parameters:
-#      - word_to_find: str
-#      - words: list
-#      - return value: int
-#      The function should return the index value of the word_to_find in the words list.
-#      Delete these instructions and replace with your own description of that the function does.
+def perform_math(initial_value: int, value: int, operation: str) -> float:
+    
+    # Check if it is additon
+    if operation == '+':
+        return float(initial_value + value)
+    # Check if it is subtraction
+    elif operation == '-':
+        return float(initial_value - value)
+    # Check if it is multiplication
+    elif operation == '*':
+        return float(initial_value * value)
+    # Check if it is division
+    elif operation == '/':
+        # You can not divide a number by 0
+        if value == 0:
+            # This will give you an error if you try to divide by 0
+            raise ZeroDivisionError("Division by zero is not allowed.")
+        return float(initial_value / value)
+    # Any other error, this will let you know something isnt right
+    else:
+        raise ValueError(f"Invalid operation '{operation}'. Valid operations are '+', '-', '*', '/'.")
+
+#  Test addition
+print(perform_math(10, 5, '+')) 
+
+# test division
+print(perform_math(10, 5, '/'))
+# test divison by 0
+print(perform_math(10, 0, '/'))
+
+
+
+# 2) 
+
+def find_word_index(word_to_find: str, words: list) -> int:
+    try:
+        # Try to find the index of the word in the list
+        return words.index(word_to_find)
+    except ValueError:
+        # If the word is not found it will return -1
+        return -1
+    
+words_list = ['apple', 'banana', 'cherry', 'apple', 'orange']
+
+# Word found in the list
+print(find_word_index('cherry', words_list))  # Output: 2
+
+# Word not found in the list
+print(find_word_index('grape', words_list))  # Output: -1
+
+
+
 
 # 3) TODO write a function called 'get_value_from_dict_using_key' that takes two parameters:
 #      - key: str
@@ -43,7 +82,18 @@ from cse251functions import *
 #      - return value: str
 #      The function should return the value (which will be a string) mapped to the key.
 #      Delete these instructions and replace with your own description of that the function does.
+def get_value_from_dict_using_key(key: str, word_dict: dict) -> str:
 
+
+
+
+
+
+
+
+
+
+    
 # 4) TODO write a function called 'get_list_of_urls_from_dict' that takes two parameters:
 #      - key: str
 #      - url_dict: dict
