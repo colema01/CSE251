@@ -148,18 +148,28 @@ def find_url(urls: list, name: str) ->str:
 # 6) 
 def find_str_in_file(filename: str, str_to_find: str) -> bool:
 
-#Returns true if the string is found in the file, it is false otherwise.
+    # Try block to handle file-related exceptions while opening or reading the file
     try:
+        # Open the file in read mode with UTF-8 encoding to ensure proper character handling
         with open(filename, 'r', encoding='utf-8') as file:
+            # Iterate over each line in the file
             for line in file:
+                # Check if the specified string is present in the current line
                 if str_to_find in line:
+                    # Return True immediately if the string is found
                     return True
+    # Handle the case where the file does not exist
     except FileNotFoundError:
+        # Print an error message indicating the file was not found
         print(f"Error: The file '{filename}' does not exist.")
+    # Handle other input/output exceptions during file reading
     except IOError as e:
+        # Print an error message detailing the I/O error
         print(f"Error reading the file '{filename}': {e}")
-
+    
+    # Return False if the string is not found or an error occurs
     return False
+
 
 
 
