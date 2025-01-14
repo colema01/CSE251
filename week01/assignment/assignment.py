@@ -44,7 +44,7 @@ def perform_math(initial_value: int, value: int, operation: str) -> float:
         return float(initial_value / value)
     # Any other error, this will let you know something isnt right
     else:
-        raise ValueError(f"Invalid operation '{operation}'. Valid operations are '+', '-', '*', '/'.")
+        raise ValueError(f"Invalid operation '{operation}'")
 
 # #  Test addition
 # print(perform_math(10, 5, '+')) 
@@ -128,57 +128,106 @@ def get_list_of_urls_from_dict(key: str, url_dict: dict) ->list:
 
 
 
-# 5) TODO write a function called 'find_url' that takes two parameters:
-#      - urls: list
-#      - name: str
-#      - return value: str
-#      The function should return the url that contains the name within a list of urls,
-#      else return a blank string.
-#      Delete these instructions and replace with your own description of that the function does.
+# 5) 
 
-# 6) TODO write a function called 'find_str_in_file' that takes two parameters:
-#      - filename: str
-#      - str_to_find: str
-#      - return value: bool
-#      The function should return true if str_to_find is within the file, else false
-#      Delete these instructions and replace with your own description of that the function does.
+def find_url(urls: list, name: str) ->str:
+    for url in urls:
+        # Check if the name is a substring of the current URL
+        if name in url:
+            return url
+    # If no match is found, return a blank string
+    return ""
 
-# 7) TODO write a class called 'MyParentClass'. The constructor should take three parameters:
-#      - value: int
-#      - values: list
-#      - name: str
-#      Add a method called 'get_value_using_index' that returns the value
-#      in the values list at an index that is passed.
-#      Delete these instructions and replace with your own description of that the function does.
 
-# 8) TODO write a class called 'MyChildClass'. The class should extend the MyParentClass.
-#      The constructor should take four parameters:
-#      - value: int
-#      - values: list
-#      - name: str
-#      - age: int
-#      The constructor should call super and pass in the appropriate parameters
-#      Delete these instructions and replace with your own description of that the function does.
+# 6) 
 
-# 9) TODO write a function called 'pass_by_reference_mutable_example' that takes two parameters:
-#      - lists_are_passed_by_reference_and_mutable: list
-#      - str_to_add: str
-#      - return value: str
-#      The function should append the str_to_add to the list and return index zero. Notice that in the asserts,
-#      that the memory id of the list stays the same after adding the string. Also, the function
-#      does not need to return the list in order for it to see the newly added item. Since the function
-#      needs to return a string, you can make changes to a list without needing to return it from a function.
-#      Delete these instructions and replace with your own description of that the function does.
-#      10) TODO: Provide a quick explanation of what pass-by-reference means. Also, what does mutable mean?
+def find_str_in_file(filename: str, str_to_find: str) -> bool:
 
-# 11) TODO write a function called 'pass_by_reference_immutable_example' that takes two parameters:
-#      - strings_are_pass_by_reference_and_immutable: string
-#      - str_to_add: str
-#      - return value: str
-#      The function should append the str_to_add to the strings_are_pass_by_reference_and_immutable string.
-#      Notice that in the asserts, that the memory id of the first string and the return string are different.
-#      Delete these instructions and replace with your own description of that the function does.
-#      12) TODO: What does immutable mean?
+#Returns true if the string is found in the file, it is false otherwise.
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:
+            for line in file:
+                if str_to_find in line:
+                    return True
+    except FileNotFoundError:
+        print(f"Error: The file '{filename}' does not exist.")
+    except IOError as e:
+        print(f"Error reading the file '{filename}': {e}")
+
+    return False
+
+
+
+# 7) 
+
+class MyParentClass:
+    
+    def __init__(self, value: int, values: list, name: str):
+        
+        # Initializes with a value, list, and name.
+    
+        self.value = value  # Stores single value
+        self.values = values  # Stores list of values
+        self.name = name  # Stores the name
+
+    def get_value_using_index(self, index: int):
+        
+        # Get value from the list by index.
+       
+        try:
+            return self.values[index]  # Returns the value at index
+        except IndexError:
+            print("Index out of range.")  # Handles invalid index
+            return None
+
+
+
+
+# 8) 
+
+class MyChildClass(MyParentClass):
+    
+    #Extends MyParentClass by adding an age attribute.
+    
+
+    def __init__(self, value: int, values: list, name: str, age: int):
+        
+         #Initializes with value, values, name, and age.
+         # Call parent class constructor
+        
+        super().__init__(value, values, name)  
+        
+        # Store the age attribute
+        self.age = age  
+
+childObj = MyChildClass(1, [5, 6, 7], "3", 10)
+
+
+
+
+# 9) 
+def pass_by_reference_mutable_example(lists_are_passed_by_reference_and_mutable: list, str_to_add: str) -> str:
+  
+    lists_are_passed_by_reference_and_mutable.append(str_to_add)  # Add the string to the list
+    return lists_are_passed_by_reference_and_mutable[0]  # Return the first element of the list
+
+# 10) TODO: Provide a quick explanation of what pass-by-reference means. Also, what does mutable mean?
+'''
+Pass-by-reference means the function works directly with the original object, so changes made inside the function affect it outside too. Mutable objects, like lists or dictionaries, can be changed after they’re created. 
+For example, adding an item to a list inside a function updates the same list outside. This is different from immutable objects, like strings, which can’t be changed after they’re created.
+'''
+
+# 11) 
+def pass_by_reference_immutable_example(strings_are_pass_by_reference_and_immutable: str, str_to_add: str) -> str:
+
+    return strings_are_pass_by_reference_and_immutable + str_to_add  # Combine the strings and return a new string
+
+
+# 12) TODO: What does immutable mean?
+'''
+Immutable means an object cannot be changed after it is created. In Python, strings, tuples, and numbers are examples of immutable objects. For example, concatenating strings creates a new string instead of modifying the original. 
+This ensures the original object stays unchanged, providing stability and predictability.
+'''
 
 # Don't change any of the assert lines. All asserts should pass. You should see "All tests passed!" if all assert pass.
 # If an assert doesn't pass, you will see an AssertionError (see https://www.w3schools.com/python/ref_keyword_assert.asp).
