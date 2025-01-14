@@ -21,6 +21,7 @@ Not passing an assert or answering #10 and #12: 0 points (code must pass all ass
 from unittest import TestCase
 from cse251functions import *
 
+
 # 1)
 
 def perform_math(initial_value: int, value: int, operation: str) -> float:
@@ -45,13 +46,13 @@ def perform_math(initial_value: int, value: int, operation: str) -> float:
     else:
         raise ValueError(f"Invalid operation '{operation}'. Valid operations are '+', '-', '*', '/'.")
 
-#  Test addition
-print(perform_math(10, 5, '+')) 
+# #  Test addition
+# print(perform_math(10, 5, '+')) 
 
-# test division
-print(perform_math(10, 5, '/'))
-# test divison by 0
-print(perform_math(10, 0, '/'))
+# # test division
+# print(perform_math(10, 5, '/'))
+# # test divison by 0
+# print(perform_math(10, 0, '/'))
 
 
 
@@ -65,25 +66,37 @@ def find_word_index(word_to_find: str, words: list) -> int:
         # If the word is not found it will return -1
         return -1
     
-words_list = ['apple', 'banana', 'cherry', 'apple', 'orange']
+# words_list = ['apple', 'banana', 'cherry', 'apple', 'orange']
 
-# Word found in the list
-print(find_word_index('cherry', words_list))  # Output: 2
+# # Word found in the list
+# print(find_word_index('cherry', words_list))  # Output: 2
 
-# Word not found in the list
-print(find_word_index('grape', words_list))  # Output: -1
-
-
+# # Word not found in the list
+# print(find_word_index('grape', words_list))  # Output: -1
 
 
-# 3) TODO write a function called 'get_value_from_dict_using_key' that takes two parameters:
-#      - key: str
-#      - word_dict: dict
-#      - return value: str
-#      The function should return the value (which will be a string) mapped to the key.
-#      Delete these instructions and replace with your own description of that the function does.
+
+
+# 3) 
+
 def get_value_from_dict_using_key(key: str, word_dict: dict) -> str:
 
+#this returns the key if found
+ return word_dict.get(key, "Key is not found")
+
+
+# # dictionary of fruit
+# word_dict = {
+#     "apple": "A fruit",
+#     "banana": "A yellow fruit",
+#     "cherry": "A small, red fruit"
+# }
+
+# # Key exists in the dictionary
+# print(get_value_from_dict_using_key("apple", word_dict))  
+
+# # Key does not exist in the dictionary
+# print(get_value_from_dict_using_key("grape", word_dict))  
 
 
 
@@ -91,15 +104,29 @@ def get_value_from_dict_using_key(key: str, word_dict: dict) -> str:
 
 
 
+# 4) 
+
+def get_list_of_urls_from_dict(key: str, url_dict: dict) ->list:
+
+    # returns key
+    return url_dict.get(key, [])
+
+# dictionary
+# url_dict = {
+#     "search": ["https://google.com", "https://bing.com"],
+#     "social": ["https://facebook.com", "https://twitter.com"],
+#     "news": ["https://cnn.com", "https://bbc.com"]
+# }
+
+# # Key exists in the dictionary
+# print(get_list_of_urls_from_dict("social", url_dict))
 
 
-    
-# 4) TODO write a function called 'get_list_of_urls_from_dict' that takes two parameters:
-#      - key: str
-#      - url_dict: dict
-#      - return value: list
-#      The function should return the value (which will be a list) mapped to the key.
-#      Delete these instructions and replace with your own description of that the function does.
+# # Key does not exist in the dictionary
+# print(get_list_of_urls_from_dict("shopping", url_dict))
+
+
+
 
 # 5) TODO write a function called 'find_url' that takes two parameters:
 #      - urls: list
