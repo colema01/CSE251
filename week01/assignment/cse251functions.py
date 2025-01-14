@@ -46,7 +46,7 @@ def create_signature_file(semester):
 
     width = 725
     height = 450
-
+    
     char_count = 0
     word_count = 0
     line_count = 0
@@ -99,7 +99,8 @@ def create_signature_file(semester):
     resource_path = os.path.realpath(os.path.join(
         os.getcwd(), os.path.dirname(__file__)))
     # append the font name
-    font_path =  os.path.join(resource_path, "COURBD.TTF")
+    font_path = r"C:\Windows\Fonts\arial.ttf"  # Adjust for your OS and font availability
+
 
     img = Image.new('CMYK', (width, height))
     draw1 = ImageDraw.Draw(img)

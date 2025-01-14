@@ -25,8 +25,7 @@ from cse251functions import *
 # 1)
 
 def perform_math(initial_value: int, value: int, operation: str) -> float:
-    
-    # Check if it is additon
+    # Check if it is addition
     if operation == '+':
         return float(initial_value + value)
     # Check if it is subtraction
@@ -37,14 +36,21 @@ def perform_math(initial_value: int, value: int, operation: str) -> float:
         return float(initial_value * value)
     # Check if it is division
     elif operation == '/':
-        # You can not divide a number by 0
         if value == 0:
-            # This will give you an error if you try to divide by 0
             raise ZeroDivisionError("Division by zero is not allowed.")
         return float(initial_value / value)
-    # Any other error, this will let you know something isnt right
+    # Check if it is floor division
+    elif operation == '//':
+        if value == 0:
+            raise ZeroDivisionError("Division by zero is not allowed.")
+        return float(initial_value // value)
+    # Check if it is exponentiation
+    elif operation == '**':
+        return float(initial_value ** value)
+    # If operation is invalid
     else:
         raise ValueError(f"Invalid operation '{operation}'")
+
 
 # #  Test addition
 # print(perform_math(10, 5, '+')) 
@@ -140,7 +146,6 @@ def find_url(urls: list, name: str) ->str:
 
 
 # 6) 
-
 def find_str_in_file(filename: str, str_to_find: str) -> bool:
 
 #Returns true if the string is found in the file, it is false otherwise.
@@ -155,6 +160,7 @@ def find_str_in_file(filename: str, str_to_find: str) -> bool:
         print(f"Error reading the file '{filename}': {e}")
 
     return False
+
 
 
 
@@ -179,6 +185,9 @@ class MyParentClass:
         except IndexError:
             print("Index out of range.")  # Handles invalid index
             return None
+
+obj = MyParentClass(1, [5, 6, 7], "3")
+        
 
 
 
@@ -302,7 +311,7 @@ def main():
         - Readings: https://www.geeksforgeeks.org/python-classes-and-objects/, https://www.geeksforgeeks.org/extend-class-method-in-python/, https://realpython.com/python-super/
     '''
     # 13) TODO instantiate an object using MyParentClass with the following three parameters: (1, [5, 6, 7], "3")
-    obj = ...
+    obj = MyParentClass(1, [5, 6, 7], "3")
     assert obj.value == 1
     assert obj.values == [5, 6, 7]
     assert obj.name == "3"
@@ -315,7 +324,7 @@ def main():
     # class constructor already creates the value, values, and name parameters. Do not write these in the child
     # class. Instead, the child constructor should call the parent constructor. Same for the 'get_value_using_index'
     # function, do not rewrite this in the child class.
-    childObj = ...
+    childObj = MyChildClass(1, [5, 6, 7], "3", 10)
     assert childObj.value == 1
     assert childObj.values == [5, 6, 7]
     assert childObj.name == "3"
@@ -331,8 +340,8 @@ def main():
         - Understand how to compare strings
         - Readings: https://www.geeksforgeeks.org/open-a-file-in-python/, https://www.geeksforgeeks.org/with-statement-in-python/
     '''
-    assert find_str_in_file("data.txt", "g") == True
-    assert find_str_in_file("data.txt", "1") == False
+    assert find_str_in_file(r"C:\Users\mitch\CSE251\week01\assignment\data.txt", "g") == True
+    assert find_str_in_file(r"C:\Users\mitch\CSE251\week01\assignment\data.txt", "1") == False
 
     '''
         - Know the difference between pass-by-reference and pass-by-value.
