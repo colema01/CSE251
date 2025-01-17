@@ -24,20 +24,35 @@ from cse251functions import *
 PRODUCT = 0
 
 
+def compute_product(number):
+    
+    global PRODUCT  # Declared global to modify the shared variable
+    PRODUCT = 1  # I need the product to = 1 
+    for i in range(1, number):  # Loop through numbers from 1 to (number - 1)
+        PRODUCT *= i  # Multiply and update the product
+
 def main():
+    
+    global PRODUCT  # Declare global for result
 
-    # Test your thread/function first with 5 (so 1 x 2 x 3 x 4 = 24) (replace this line with your own comment)
-    #assert PRODUCT == 24, f'The product should equal 45 but instead was {
-    #    PRODUCT}'
+    # Test with 5 
+    thread_5 = threading.Thread(target=compute_product, args=(5,))  # thread for number 5
+    thread_5.start()  # Start the thread
+    thread_5.join()  # Wait for the thread to finish
+    assert PRODUCT == 24, f'Should = 24 {PRODUCT}'
 
-    # Then with 10 (replace this line with your own comment)
-    #assert PRODUCT == 362880, f'The product should equal 362880 but instead was {
-    #    PRODUCT}'
+    # Test with 10 
+    thread_10 = threading.Thread(target=compute_product, args=(10,))  # thread for number 10
+    thread_10.start()  # Start the thread
+    thread_10.join()  # Wait for the thread to finish
+    assert PRODUCT == 362880, f'Should = 362880 {PRODUCT}'
 
-    # Then with 15 (replace this line with your own comment)
-    #assert PRODUCT == 87178291200, f'The product should equal 87178291200 but instead was {
-    #    PRODUCT}'
-    pass # delete this line
+    # Test with 15 
+    thread_15 = threading.Thread(target=compute_product, args=(15,))  # thread for number 15
+    thread_15.start()  # Start the thread
+    thread_15.join()  # Wait for the thread to finish
+    assert PRODUCT == 87178291200, f' Should = 87178291200 {PRODUCT}'
+
 
 if __name__ == '__main__':
     main()
