@@ -14,33 +14,48 @@ d. How do you get the value an object's attribute (see https://datagy.io/python-
 '''
 
 import threading
-from cse251functions import *
+from cse251functions import create_signature_file
 
 ###############################
 # DO NOT USE YOUR OWN GLOBALS #
 ###############################
 
-# TODO - Create a thread class, see this week's reading to learn how (delete this line and
-# replace with your own description of the purpose of your class)
+class ProductThread(threading.Thread):
+    def __init__(self, number):
 
+        super().__init__()  # Created the parent Thread class
+        self.number = number  # Store the number as an attribute
+        self.product = None  # Make the product as None for the result later
+
+    def run(self):
+
+        self.product = 1  # Make the product = to 1
+        for i in range(1, self.number):  # Loop through numbers 
+            self.product *= i  # Multiply and update the product
 
 def main():
-    # Instantiate your thread class and pass in 5 (delete this line).
-    # Test (assert) if its product attribute is equal to 45 (delete this line).
-    # Note: do no use 'yourThread' as the name of your thread object (delete this line).
-    assert yourThread.product == 24, f'The product should equal 24 but instead was {
-        yourThread.product}'
 
-    # Repeat, passing in 10 (delete this line).
-    assert yourThread.product == 362880, f'The product should equal 362880 but instead was {
-        yourThread.product}'
+    # Class with 5
+    thread_5 = ProductThread(5)
+    thread_5.start()  # Start the thread
+    thread_5.join()  # Wait for the thread to finish
+    assert thread_5.product == 24, f'Should = 24 but actually is {thread_5.product}'
 
-    # Repeat, passing in 15 (delete this line).
-    assert yourThread.product == 87178291200, f'The product should equal 87178291200 but instead was {
-        yourThread.product}'
+    # Class with 10 
+    thread_10 = ProductThread(10)
+    thread_10.start()  # Start the thread
+    thread_10.join()  # Wait for the thread to finish
+    assert thread_10.product == 362880, f'Should equal = 362880 but actually {thread_10.product}'
+
+    # Class with 15 
+    thread_15 = ProductThread(15)
+    thread_15.start()  # Start the thread
+    thread_15.join()  # Wait for the thread to finish
+    assert thread_15.product == 87178291200, f'Should = 87178291200 but actually {thread_15.product}'
 
 
 if __name__ == '__main__':
-    main()
-    print("DONE")
-    create_signature_file("CSE251W25")
+    main()  
+    print("DONE")  
+    create_signature_file("CSE251W25")  
+
