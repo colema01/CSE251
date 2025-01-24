@@ -10,24 +10,28 @@ Requirements
 5. COMMENT every line that you write yourself.
    
 Questions:
-1. Time to run using 1 thread =
-2. Time to run using 10 threads =
-3. Time to run using 50 threads =
-4. Time to run using 101 threads =
+1. Time to run using 1 thread = 3.56
+2. Time to run using 10 threads = 3.73
+3. Time to run using 50 threads = 3.69
+4. Time to run using 101 threads =3.75
 4. Based on your study of the GIL (see https://realpython.com/python-gil), 
    what conclusions can you draw about the similarity of the times (short answer)?
    >
+   The times are similar because GIL allows only one thread to run at a time, even on multi-core CPUs. 
+   This means adding more threads doesn’t make the program faster since only one thread can work on the task at any moment. 
+   The slight increase in time with more threads is due to the extra effort needed to calculate.
    >
 5. Is this assignment an IO Bound or CPU Bound problem (see https://stackoverflow.com/questions/868568/what-do-the-terms-cpu-bound-and-i-o-bound-mean)?
    >
+   This is CPU Bound because it relies on heavy calculations to determine if numbers are prime. 
+   The program's performance depends on how fast the CPU can handle these computations, as it spends most of its time performing mathematical operations. 
+   It’s not I/O Bound since there’s minimal input or output involved.
 '''
 
 import math
 import threading
 import time
-from datetime import datetime, timedelta
-
-from cse251functions import *
+from cse251functions import create_signature_file
 
 # Global count of the number of primes found
 PRIME_COUNT = 0
@@ -35,26 +39,13 @@ PRIME_COUNT = 0
 # Global count of the numbers examined
 NUMBERS_EXAMINED_COUNT = 0
 
-# The number of threads to use (should try 1, 10, 50, and 101 and
-# report results above in the questions)
-NUMBER_THREADS = 10
+# Lock for thread-safe updates to global variables
+lock = threading.Lock()
 
 def is_prime(n: int):
     """
-    Primality test using 6k+-1 optimization.
-    From: https://en.wikipedia.org/wiki/Primality_test
-
-    Parameters
-    ----------
-    ``n`` : int
-        Number to determine if prime
-
-    Returns
-    -------
-    bool
-        True if ``n`` is prime.
+    Determines if a number is prime using 6k+-1 optimization.
     """
-
     if n <= 3:
         return n > 1
     if n % 2 == 0 or n % 3 == 0:
@@ -66,34 +57,77 @@ def is_prime(n: int):
         i += 6
     return True
 
+def count_primes(start, end):
+    """
+    Count prime numbers in the range [start, end).
+    """
+    global PRIME_COUNT, NUMBERS_EXAMINED_COUNT
+
+    local_prime_count = 0
+    for number in range(start, end):
+        if is_prime(number):
+            local_prime_count += 1
+
+    # Update global counters using a lock
+    with lock:
+        PRIME_COUNT += local_prime_count
+        NUMBERS_EXAMINED_COUNT += (end - start)
+
 def main():
-    # Start a timer
-    begin_time = time.perf_counter()
+    # Start and end range
+    start_number = 100_000_000
+    range_size = 370_803
+    end_number = start_number + range_size
 
-    # number to start at
-    first_number = 100_000_000
+    # Thread configurations to test
+    thread_counts = [1, 10, 50, 101]
 
-    # interval to check over
-    interval = 370_803
+    for thread_count in thread_counts:
+        # Reset global variables
+        global PRIME_COUNT, NUMBERS_EXAMINED_COUNT
+        PRIME_COUNT = 0
+        NUMBERS_EXAMINED_COUNT = 0
 
-    # number to end at
-    last_number = first_number + interval
+        # Calculate the range each thread will process
+        range_per_thread = (range_size + thread_count - 1) // thread_count
 
-    # TODO write code here
+        # List to store the threads
+        threads = []
 
-    # Use the below code to check and print your results
-    assert NUMBERS_EXAMINED_COUNT == 370_803, f"Should check exactly 370,803 numbers, but checked {
-        NUMBERS_EXAMINED_COUNT:,}"
-    assert PRIME_COUNT == 20_144, f"Should find exactly 20,144 primes but found {
-        PRIME_COUNT:,}"
+        print(f"\nRunning with {thread_count} threads...")
 
-    # Print out summary
-    print(f'Numbers processed = {NUMBERS_EXAMINED_COUNT:,}')
-    print(f'Primes found = {PRIME_COUNT:,}')
-    total_time = "{:.2f}".format(time.perf_counter() - begin_time)
-    print(f'Total time = {total_time} sec')
+        # Start timer
+        start_time = time.perf_counter()
 
+        # Create and start threads
+        for i in range(thread_count):
+            thread_start = start_number + i * range_per_thread
+            thread_end = min(thread_start + range_per_thread, end_number)
+            thread = threading.Thread(target=count_primes, args=(thread_start, thread_end))
+            threads.append(thread)
+            thread.start()
+
+        # Wait for all threads to complete
+        for thread in threads:
+            thread.join()
+
+        # Stop timer
+        total_time = time.perf_counter() - start_time
+
+        # Print results
+        print(f"Threads: {thread_count}")
+        print(f"Numbers processed: {NUMBERS_EXAMINED_COUNT:,}")
+        print(f"Primes found: {PRIME_COUNT:,}")
+        print(f"Total time: {total_time:.2f} seconds")
+
+        # Validate results
+        assert NUMBERS_EXAMINED_COUNT == 370_803, \
+            f"Expected to process exactly 370,803 numbers, but processed {NUMBERS_EXAMINED_COUNT:,}"
+        assert PRIME_COUNT == 20_144, \
+            f"Expected to find exactly 20,144 primes, but found {PRIME_COUNT:,}"
 
 if __name__ == '__main__':
     main()
     create_signature_file("CSE251W25")
+
+
